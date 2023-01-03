@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { Provider } from "react-redux";
-import { HashRouter } from "react-router-dom";
+import { BrowserRouter } from "react-router-dom";
 import App from "./App";
 import CssBaseline from "@mui/material/CssBaseline";
 
@@ -16,11 +16,11 @@ root.render(
   <>
     <CssBaseline />
     <ThemeProvider theme={theme}>
-      <HashRouter>
+      <BrowserRouter>
         <Provider store={store}>
           <App />
         </Provider>
-      </HashRouter>
+      </BrowserRouter>
     </ThemeProvider>
   </>
 );
