@@ -1,52 +1,136 @@
-import React from 'react';
-import TextField from '@mui/material/TextField';
-import Paper from '@mui/material/Paper';
-import Button from '@mui/material/Button';
-import SimpleMDE from 'react-simplemde-editor';
+import React, { useState, useCallback, useMemo, useRef, useEffect } from "react";
+import TextField from "@mui/material/TextField";
+import Paper from "@mui/material/Paper";
+import Button from "@mui/material/Button";
+import SimpleMDE from "react-simplemde-editor";
 
-import 'easymde/dist/easymde.min.css';
-import styles from './AddPost.module.scss';
+import "easymde/dist/easymde.min.css";
+import styles from "./AddPost.module.scss";
+import { useNavigate, Navigate, useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { selectIsAuth } from "../../redux/slices/auth";
+import instance from "../../axios";
 
 export const AddPost = () => {
-  const imageUrl = '';
-  const [value, setValue] = React.useState('');
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const isAuth = useSelector(selectIsAuth);
+  const [isLoading, setLoading] = useState(false);
+  const [text, setText] = useState("");
+  const [title, setTitle] = useState("");
+  const [tags, setTags] = useState("");
+  const [imageUrl, setImageUrl] = useState("");
+  const inputFieldRef = useRef(null);
 
-  const handleChangeFile = () => {};
+  const isEditing = Boolean(id);
 
-  const onClickRemoveImage = () => {};
+  const handleChangeFile = async (event) => {
+    try {
+      const formData = new FormData();
+      formData.append("image", event.target.files[0]);
 
-  const onChange = React.useCallback((value) => {
-    setValue(value);
+      const { data } = await instance.post("/upload", formData);
+      setImageUrl(data.url);
+    } catch (err) {
+      console.warn(err);
+      alert("Помилка при завантаженні файла");
+    }
+  };
+
+  const onClickRemoveImage = () => {
+    setImageUrl("");
+  };
+
+  const onChange = useCallback((value) => {
+    setText(value);
   }, []);
 
-  const options = React.useMemo(
+  const onSubmit = async () => {
+    try {
+      setLoading(true);
+
+      const fields = {
+        title,
+        imageUrl,
+        tags,
+        text,
+      };
+
+      const { data } = isEditing 
+      ? await instance.patch(`/posts/${id}`, fields)
+      : await instance.post('/posts', fields);
+
+      const _id = isEditing ? id : data._id;
+
+      navigate(`/posts/${_id}`);
+    } catch (err) {
+      console.warn(err);
+      alert("Помилка при завантаженні файла");
+    }
+  };
+
+
+  useEffect(() => {
+    if (id) {
+      instance.get(`/posts/${id}`)
+      .then(({data}) => {
+        setTitle(data.title);
+        setText(data.text);
+        setImageUrl(data.imageUrl);
+        setTags(data.tags.join(','));
+      })
+    }
+  }, [])
+
+  const options = useMemo(
     () => ({
       spellChecker: false,
-      maxHeight: '400px',
+      maxHeight: "400px",
       autofocus: true,
-      placeholder: 'Введите текст...',
+      placeholder: "Введите текст...",
       status: false,
       autosave: {
         enabled: true,
         delay: 1000,
       },
     }),
-    [],
+    []
   );
+
+  if (!window.localStorage.getItem("token") && !isAuth) {
+    return <Navigate to="/" />;
+  }
 
   return (
     <Paper style={{ padding: 30 }}>
-      <Button variant="outlined" size="large">
-        Загрузить превью
+      <Button
+        onClick={() => inputFieldRef.current.click()}
+        variant="outlined"
+        size="large"
+      >
+        Завантажити прев'ю
       </Button>
-      <input type="file" onChange={handleChangeFile} hidden />
+      <input
+        ref={inputFieldRef}
+        type="file"
+        onChange={handleChangeFile}
+        hidden
+      />
       {imageUrl && (
-        <Button variant="contained" color="error" onClick={onClickRemoveImage}>
-          Удалить
-        </Button>
-      )}
-      {imageUrl && (
-        <img className={styles.image} src={`http://localhost:4444${imageUrl}`} alt="Uploaded" />
+        <>
+          <Button
+            variant="contained"
+            color="error"
+            onClick={onClickRemoveImage}
+          >
+            Видалити
+          </Button>
+          <img
+            className={styles.image}
+            src={`http://localhost:4444${imageUrl}`}
+            alt="Uploaded"
+          />
+        </>
       )}
       <br />
       <br />
@@ -54,16 +138,30 @@ export const AddPost = () => {
         classes={{ root: styles.title }}
         variant="standard"
         placeholder="Заголовок статьи..."
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
         fullWidth
       />
-      <TextField classes={{ root: styles.tags }} variant="standard" placeholder="Тэги" fullWidth />
-      <SimpleMDE className={styles.editor} value={value} onChange={onChange} options={options} />
+      <TextField
+        classes={{ root: styles.tags }}
+        value={tags}
+        onChange={(e) => setTags(e.target.value)}
+        variant="standard"
+        placeholder="Тэги"
+        fullWidth
+      />
+      <SimpleMDE
+        className={styles.editor}
+        value={text}
+        onChange={onChange}
+        options={options}
+      />
       <div className={styles.buttons}>
-        <Button size="large" variant="contained">
-          Опубликовать
+        <Button onClick={onSubmit} size="large" variant="contained">
+          {isEditing ? 'Зберегти': 'Опублікувати'}
         </Button>
         <a href="/">
-          <Button size="large">Отмена</Button>
+          <Button size="large">Відмінити</Button>
         </a>
       </div>
     </Paper>
