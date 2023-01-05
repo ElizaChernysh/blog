@@ -25,6 +25,9 @@ export const AddPost = () => {
   const isEditing = Boolean(id);
 
   const handleChangeFile = async (event) => {
+    console.log(event.target.files);
+    console.log(event.target.files[0]);
+
     try {
       const formData = new FormData();
       const file = event.target.files[0];
