@@ -30,7 +30,7 @@ export const AddPost = () => {
 
     try {
       const formData = new FormData();
-      const file = event.target.files[0];
+      const file = event.target.files[0].name;
       formData.append('image', file);
 
       const { data } = await instance.post('/upload', formData);
