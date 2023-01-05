@@ -32,7 +32,7 @@ export const Post = ({
     return <PostSkeleton />;
   }
 
-  console.log(`${id} - id in post`);
+  console.log(`${imageUrl} - it's in image`);
 
   const onClickRemove = () => {
     if (window.confirm('ви дійсно хочете видалити статтю?')) {
