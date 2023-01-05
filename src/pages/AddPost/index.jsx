@@ -67,7 +67,7 @@ export const AddPost = () => {
       navigate(`/posts/${_id}`);
     } catch (err) {
       console.warn(err);
-      alert("Помилка при завантаженні файла");
+      alert("Помилка при завантаженні cтатті");
     }
   };
 
@@ -115,7 +115,6 @@ export const AddPost = () => {
       <input
         ref={inputFieldRef}
         type="file"
-        value={imageUrl}
         onChange={handleChangeFile}
         hidden
       />
