@@ -25,12 +25,9 @@ export const AddPost = () => {
   const isEditing = Boolean(id);
 
   const handleChangeFile = async (event) => {
-    console.log(event.target.files);
-    console.log(event.target.files[0]);
-
     try {
       const formData = new FormData();
-      const file = event.target.files[0].name;
+      const file = event.target.files;
       formData.append('image', file);
 
       const { data } = await instance.post('/upload', formData);
@@ -118,6 +115,7 @@ export const AddPost = () => {
       <input
         ref={inputFieldRef}
         type="file"
+        value={imageUrl}
         onChange={handleChangeFile}
         hidden
       />
