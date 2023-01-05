@@ -32,13 +32,10 @@ export const Post = ({
     return <PostSkeleton />;
   }
 
-  console.log(`${imageUrl} - it's in image`);
-
   const onClickRemove = () => {
     if (window.confirm('ви дійсно хочете видалити статтю?')) {
       dispatch(fetchRemovePost(id));
     }
-    // dispatch(fetchRemovePost(id));
   };
 
   return (

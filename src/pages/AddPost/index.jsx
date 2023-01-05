@@ -27,11 +27,13 @@ export const AddPost = () => {
   const handleChangeFile = async (event) => {
     try {
       const formData = new FormData();
-      formData.append("image", event.target.files[0]);
+      const file = event.target.files[0];
+      formData.append('image', file);
 
-      const { data } = await instance.post("/upload", formData);
+      const { data } = await instance.post('/upload', formData);
       setImageUrl(data.url);
     } catch (err) {
+      console.log(imageUrl);
       console.warn(err);
       alert("Помилка при завантаженні файла");
     }
