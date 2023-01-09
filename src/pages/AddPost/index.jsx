@@ -32,9 +32,9 @@ export const AddPost = () => {
       console.log(`it's file ${event.target.files[0]}`)
       formData.append('image', imageFile);
 
-      const { data } = await instance.post('/upload', formData);
-      console.log(`it's data ${data}`);
-      setImageUrl(data.url);
+      const response = await instance.post('/upload', formData);
+      console.log(`it's data ${response}`);
+      setImageUrl(response.data.image);
     } catch (err) {
       console.log(imageUrl);
       console.warn(err);
@@ -116,6 +116,7 @@ export const AddPost = () => {
         Завантажити прев'ю
       </Button>
       <input
+        name="image"
         ref={inputFieldRef}
         type="file"
         onChange={handleChangeFile}
