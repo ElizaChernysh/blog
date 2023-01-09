@@ -28,13 +28,12 @@ export const AddPost = () => {
     try {
       const formData = new FormData();
       const imageFile = event.target.files[0];
-      setImageUrl(imageUrl);
       console.log(`it's file ${event.target.files[0]}`)
       formData.append('image', imageFile);
 
-      const response = await instance.post('/upload', formData);
-      console.log(`it's data ${response.data}`);
-      setImageUrl(response.data.image);
+      const {data} = await instance.post('/upload', formData);
+      console.log(`it's data ${data}`);
+      setImageUrl(data.image);
     } catch (err) {
       console.log(imageUrl);
       console.warn(err);
