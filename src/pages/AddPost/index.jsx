@@ -26,21 +26,20 @@ export const AddPost = () => {
   const isEditing = Boolean(id);
 
   const handleChangeFile = async (event) => {
-    console.log(`it's file ${event.target.files}`);
-    console.log(`it's file ${event.target.fields}`)
+    // console.log(`it's file ${event.target.files}`);
+    // console.log(`it's file ${event.target.fields}`)
     try {
       const formData = new FormData();
-      console.log(`it's files ${event.target.files}`)
-
       formData.append('image', event.target.files[0]);
 
-      const config = {headers: { 'content-type': 'multipart/form-data' }};
+      // const config = {headers: { 'content-type': 'multipart/form-data' }};
 
-      const { data } = await axios.post('https://backend-posts.vercel.app/upload', formData, config);
+      // const { data } = await axios.post('https://backend-posts.vercel.app/upload', formData);
+
+      const { data } = await instance.post('/upload', formData);
       console.log(`it's data ${data}`);
       setImageUrl(data.url);
     } catch (err) {
-      console.log(imageUrl);
       console.warn(err);
       alert("Помилка при завантаженні файла");
     }
