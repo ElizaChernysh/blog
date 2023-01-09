@@ -10,6 +10,7 @@ import { useNavigate, Navigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { selectIsAuth } from "../../redux/slices/auth";
 import instance from "../../axios";
+import axios from 'axios';
 
 export const AddPost = () => {
   const { id } = useParams();
@@ -31,9 +32,15 @@ export const AddPost = () => {
       console.log(`it's file ${event.target.files[0]}`)
       formData.append('image', imageFile);
 
-      const {data} = await instance.post('/upload', formData);
-      console.log(`it's data ${data}`);
-      setImageUrl(data.image);
+      axios.post("https://backend-posts.vercel.app/upload", formData, {
+
+      }).then(res => {
+        console.log(res);
+      })
+
+      // const {data} = await instance.post('/upload', formData);
+      // console.log(`it's data ${data}`);
+      // setImageUrl(data.image);
     } catch (err) {
       console.log(imageUrl);
       console.warn(err);
