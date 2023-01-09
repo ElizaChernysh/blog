@@ -28,19 +28,15 @@ export const AddPost = () => {
   const handleChangeFile = async (event) => {
     try {
       const formData = new FormData();
-      const imageFile = event.target.files[0];
       console.log(`it's file ${event.target.files[0]}`)
-      formData.append('image', imageFile);
 
-      axios.post("https://backend-posts.vercel.app/upload", formData, {
+      formData.append('image', event.target.files[0]);
 
-      }).then(res => {
-        console.log(res);
-      })
+      const config = {headers: { 'content-type': 'multipart/form-data' }};
 
-      // const {data} = await instance.post('/upload', formData);
-      // console.log(`it's data ${data}`);
-      // setImageUrl(data.image);
+      const { data } = await axios.post('https://backend-posts.vercel.app/upload', formData, config);
+      console.log(`it's data ${data}`);
+      setImageUrl(data.url);
     } catch (err) {
       console.log(imageUrl);
       console.warn(err);
