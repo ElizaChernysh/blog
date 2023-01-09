@@ -28,8 +28,8 @@ export const AddPost = () => {
     try {
       const formData = new FormData();
       const imageFile = event.target.files[0];
+      setImageUrl(imageUrl);
       console.log(`it's file ${imageFile}`)
-      console.log(`it's file 1 ${JSON.stringify.imageFile}`)
       formData.append('image', imageFile);
 
       const { data } = await instance.post('/upload', formData);
@@ -121,6 +121,7 @@ export const AddPost = () => {
         onChange={handleChangeFile}
         hidden
       />
+       <div>{imageUrl && `${imageUrl.name} - ${imageUrl.type}`}</div>
       {imageUrl && (
         <>
           <Button
