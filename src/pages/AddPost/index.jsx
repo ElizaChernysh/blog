@@ -21,14 +21,15 @@ export const AddPost = () => {
   const [title, setTitle] = useState("");
   const [tags, setTags] = useState("");
   const [imageUrl, setImageUrl] = useState("");
-  const inputFieldRef = useRef(null);
+  const inputFiledRef = useRef(null);
 
   const isEditing = Boolean(id);
 
   const handleChangeFile = async (event) => {
+    console.log(`it's file ${event.target.files[0]}`)
     try {
       const formData = new FormData();
-      console.log(`it's file ${event.target.files[0]}`)
+      console.log(`it's files ${event.target.files}`)
 
       formData.append('image', event.target.files[0]);
 
@@ -111,7 +112,7 @@ export const AddPost = () => {
   return (
     <Paper style={{ padding: 30 }}>
       <Button
-        onClick={() => inputFieldRef.current.click()}
+        onClick={() => inputFiledRef.current.click()}
         variant="outlined"
         size="large"
       >
@@ -119,7 +120,7 @@ export const AddPost = () => {
       </Button>
       <input
         name="image"
-        ref={inputFieldRef}
+        ref={inputFiledRef}
         type="file"
         onChange={handleChangeFile}
         hidden
