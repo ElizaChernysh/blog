@@ -33,7 +33,7 @@ export const AddPost = () => {
       formData.append('image', imageFile);
 
       const response = await instance.post('/upload', formData);
-      console.log(`it's data ${response}`);
+      console.log(`it's data ${response.data}`);
       setImageUrl(response.data.image);
     } catch (err) {
       console.log(imageUrl);
