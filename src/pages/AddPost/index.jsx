@@ -32,11 +32,10 @@ export const AddPost = () => {
       const formData = new FormData();
       formData.append('image', event.target.files[0]);
 
-      // const config = {headers: { 'content-type': 'multipart/form-data' }};
-
-      // const { data } = await axios.post('https://backend-posts.vercel.app/upload', formData);
-
-      const { data } = await instance.post('/upload', formData);
+      const { data } = await instance.post('/upload', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        }});
       console.log(`it's data ${data}`);
       setImageUrl(data.url);
     } catch (err) {
