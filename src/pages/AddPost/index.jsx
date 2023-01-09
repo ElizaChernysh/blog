@@ -10,7 +10,7 @@ import { useNavigate, Navigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { selectIsAuth } from "../../redux/slices/auth";
 import instance from "../../axios";
-import axios from 'axios';
+// import axios from 'axios';
 
 export const AddPost = () => {
   const { id } = useParams();
@@ -32,10 +32,16 @@ export const AddPost = () => {
       const formData = new FormData();
       formData.append('image', event.target.files[0]);
 
-      const { data } = await instance.post('/upload', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        }});
+      const config = {
+        headers: { 'content-type': 'multipart/form-data' }
+    };
+
+    const { data } = await instance.post('/uploads', formData, config);
+
+      // const { data } = await instance.post('/upload', formData, {
+      //   headers: {
+      //     'Content-Type': 'multipart/form-data',
+      //   }});
       console.log(`it's data ${data}`);
       setImageUrl(data.url);
     } catch (err) {
