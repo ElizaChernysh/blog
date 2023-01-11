@@ -26,15 +26,16 @@ export const AddPost = () => {
   const isEditing = Boolean(id);
 
   const handleChangeFile = async (event) => {
+    const file = event.target.files[0];
     try {
       const formData = new FormData();
-      formData.append('image', event.target.files[0]);
+      formData.append('image', file );
 
-    //   const config = {
-    //     headers: { 'content-type': 'multipart/form-data' }
-    // };
+      const config = {
+        headers: { 'content-type': 'multipart/form-data' }
+    };
 
-    const { data } = await instance.post('/upload', formData);
+    const { data } = await instance.post('/upload', formData, config);
 
       console.log(`it's data ${data}`);
       setImageUrl(data.url);
@@ -43,9 +44,6 @@ export const AddPost = () => {
       alert("Помилка при завантаженні файла");
     }
   };
-
-
-  console.log(`it's image ${imageUrl}`);
 
   const onClickRemoveImage = () => {
     setImageUrl(null);
@@ -124,7 +122,7 @@ export const AddPost = () => {
         name="image"
         ref={inputFiledRef}
         type="file"
-        onChange={(e) => handleChangeFile(e.target.files[0])}
+        onChange={handleChangeFile}
         hidden
       />
        <div>{imageUrl && `${imageUrl.name} - ${imageUrl.type}`}</div>
