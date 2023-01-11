@@ -20,7 +20,7 @@ export const AddPost = () => {
   const [text, setText] = useState("");
   const [title, setTitle] = useState("");
   const [tags, setTags] = useState("");
-  const [imageUrl, setImageUrl] = useState("");
+  const [imageUrl, setImageUrl] = useState(null);
   const inputFiledRef = useRef(null);
 
   const isEditing = Boolean(id);
@@ -46,14 +46,19 @@ export const AddPost = () => {
   //   }
   // };
 
-  const handleChangeFile = async (event) => {
+  const handleChangeFile = (event) => {
     console.log(`it's files ${JSON.stringify(event.target.files)}`);
-    console.log(`it's files[[0] ${JSON.stringify(event.target.files[0])}`);
+    console.log(`it's files[0] ${JSON.stringify(event.target.files[0])}`);
     console.log(`it's file ${event.target.value}`);
+
+    const file = event.target.files[0];
+    setImageUrl(file);
   };
 
+  console.log(`it's image ${imageUrl}`);
+
   const onClickRemoveImage = () => {
-    setImageUrl("");
+    setImageUrl(null);
   };
 
   const onChange = useCallback((value) => {
@@ -119,7 +124,7 @@ export const AddPost = () => {
   return (
     <Paper style={{ padding: 30 }}>
       <Button
-        onClick={() => inputFiledRef.current.click()}
+        onClick={(event) => inputFiledRef.current.click()}
         variant="outlined"
         size="large"
       >
@@ -129,6 +134,7 @@ export const AddPost = () => {
         name="image"
         ref={inputFiledRef}
         type="file"
+        value={imageUrl}
         onChange={handleChangeFile}
         hidden
       />
