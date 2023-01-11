@@ -25,34 +25,25 @@ export const AddPost = () => {
 
   const isEditing = Boolean(id);
 
-  // const handleChangeFile = async (event) => {
-  //   // console.log(`it's file ${event.target.files}`);
-  //   // console.log(`it's file ${event.target.fields}`)
-  //   try {
-  //     const formData = new FormData();
-  //     formData.append('image', event.target.files[0]);
+  const handleChangeFile = async (event) => {
+    try {
+      const formData = new FormData();
+      formData.append('image', event.target.files[0]);
 
-  //     const config = {
-  //       headers: { 'content-type': 'multipart/form-data' }
-  //   };
+    //   const config = {
+    //     headers: { 'content-type': 'multipart/form-data' }
+    // };
 
-  //   const { data } = await instance.post('/upload', formData, config);
+    const { data } = await instance.post('/upload', formData);
 
-  //     console.log(`it's data ${data}`);
-  //     setImageUrl(data.url);
-  //   } catch (err) {
-  //     console.warn(err);
-  //     alert("Помилка при завантаженні файла");
-  //   }
-  // };
-
-  const handleChangeFile = (event) => {
-    // console.log(`it's files ${JSON.stringify(event.target.files)}`);
-    // console.log(`it's files[0] ${JSON.stringify(event.target.files[0])}`);
-    // console.log(`it's file ${event.target.value}`);
-
-    setImageUrl(event);
+      console.log(`it's data ${data}`);
+      setImageUrl(data.url);
+    } catch (err) {
+      console.warn(err);
+      alert("Помилка при завантаженні файла");
+    }
   };
+
 
   console.log(`it's image ${imageUrl}`);
 
