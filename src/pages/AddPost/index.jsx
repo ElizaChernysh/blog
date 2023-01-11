@@ -47,12 +47,11 @@ export const AddPost = () => {
   // };
 
   const handleChangeFile = (event) => {
-    console.log(`it's files ${JSON.stringify(event.target.files)}`);
-    console.log(`it's files[0] ${JSON.stringify(event.target.files[0])}`);
-    console.log(`it's file ${event.target.value}`);
+    // console.log(`it's files ${JSON.stringify(event.target.files)}`);
+    // console.log(`it's files[0] ${JSON.stringify(event.target.files[0])}`);
+    // console.log(`it's file ${event.target.value}`);
 
-    const file = event.target.files[0];
-    setImageUrl(file);
+    setImageUrl(event);
   };
 
   console.log(`it's image ${imageUrl}`);
@@ -134,8 +133,7 @@ export const AddPost = () => {
         name="image"
         ref={inputFiledRef}
         type="file"
-        value={imageUrl}
-        onChange={handleChangeFile}
+        onChange={(e) => handleChangeFile(e.target.files[0])}
         hidden
       />
        <div>{imageUrl && `${imageUrl.name} - ${imageUrl.type}`}</div>
