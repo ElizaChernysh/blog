@@ -47,9 +47,9 @@ export const AddPost = () => {
   // };
 
   const handleChangeFile = async (event) => {
-    console.log(`it's files ${event.target.files}`);
-    console.log(`it's file[[0] ${event.target.files[0]}`)
-    console.log(`it's file ${event.target.file}`)
+    console.log(`it's files ${JSON.stringify(event.target.files)}`);
+    console.log(`it's files[[0] ${JSON.stringify(event.target.files[0])}`);
+    console.log(`it's file ${event.target.value}`);
   };
 
   const onClickRemoveImage = () => {
