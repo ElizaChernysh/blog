@@ -36,7 +36,7 @@ export const AddPost = () => {
         headers: { 'content-type': 'multipart/form-data' }
     };
 
-    const { data } = await instance.post('/uploads', formData, config);
+    const { data } = await instance.post('/upload', formData, config);
 
       // const { data } = await instance.post('/upload', formData, {
       //   headers: {
