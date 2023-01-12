@@ -31,22 +31,24 @@ export const AddPost = () => {
       const formData = new FormData();
       formData.append('image', file );
 
-      const config = {
-        headers: { 'content-type': 'multipart/form-data' }
-    };
+    //   const config = {
+    //     headers: { 'content-type': 'multipart/form-data' }
+    // };
 
-    // const { data } = await instance.post('/upload', formData, config);
-    const response = await axios.post(`${instance}/upload`, formData, config);
+    const { data } = await instance.post('/upload', formData);
+    // const response = await axios.post(`${instance}/upload`, formData);
 
-      console.log(`it's data ${response.data}`);
+      // console.log(`it's data ${response.data}`);
 
-      const data = response.data;
+      // const data = response.data;
       setImageUrl(data.url);
     } catch (err) {
       console.warn(err);
       alert("Помилка при завантаженні файла");
     }
   };
+
+  console.log(imageUrl);
 
   const onClickRemoveImage = () => {
     setImageUrl(null);
