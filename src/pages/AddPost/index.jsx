@@ -37,13 +37,12 @@ export const AddPost = () => {
       console.log(file);
       const formData = new FormData();
       formData.append("myImage", file);
-      console.jog('ok');
 
-      const { data } = await instance.post("/upload", formData);
-      console.log(`it's data ${data.img}`);
+      const { data } = await axios.post(`${instance}/upload`, formData);
+      console.log(`it's data ${data}`);
 
       // const data = response.data;
-      setImageUrl(data.img);
+      // setImageUrl(data.url);
     } catch (err) {
       console.warn(err);
       alert("Помилка при завантаженні файла");
@@ -121,7 +120,6 @@ export const AddPost = () => {
           onClick={(event) => inputFiledRef.current.click()}
           variant="outlined"
           size="large"
-          type="submit"
         >
           Завантажити прев'ю
         </Button>
