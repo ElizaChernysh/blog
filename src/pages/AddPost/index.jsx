@@ -29,19 +29,13 @@ export const AddPost = () => {
     const file = event.target.files[0];
     try {
       const formData = new FormData();
-      formData.append('image', file );
-
-    //   const config = {
-    //     headers: { 'content-type': 'multipart/form-data' }
-    // };
+      formData.append('myImage', file );
 
     const { data } = await instance.post('/upload', formData);
-    // const response = await axios.post(`${instance}/upload`, formData);
-
-      // console.log(`it's data ${response.data}`);
+    console.log(`it's data ${data}`);
 
       // const data = response.data;
-      setImageUrl(data.url);
+      // setImageUrl(data.url);
     } catch (err) {
       console.warn(err);
       alert("Помилка при завантаженні файла");
