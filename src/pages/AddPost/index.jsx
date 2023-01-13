@@ -32,16 +32,18 @@ export const AddPost = () => {
   const isEditing = Boolean(id);
 
   const handleChangeFile = async (event) => {
-    const file = event.target.files[0];
     try {
+      const file = event.target.files[0];
+      console.log(file);
       const formData = new FormData();
       formData.append("myImage", file);
+      console.jog('ok');
 
       const { data } = await instance.post("/upload", formData);
-      console.log(`it's data ${data}`);
+      console.log(`it's data ${data.img}`);
 
       // const data = response.data;
-      // setImageUrl(data.url);
+      setImageUrl(data.img);
     } catch (err) {
       console.warn(err);
       alert("Помилка при завантаженні файла");
@@ -119,6 +121,7 @@ export const AddPost = () => {
           onClick={(event) => inputFiledRef.current.click()}
           variant="outlined"
           size="large"
+          type="submit"
         >
           Завантажити прев'ю
         </Button>
