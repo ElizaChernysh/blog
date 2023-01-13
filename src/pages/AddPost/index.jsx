@@ -1,4 +1,10 @@
-import React, { useState, useCallback, useMemo, useRef, useEffect } from "react";
+import React, {
+  useState,
+  useCallback,
+  useMemo,
+  useRef,
+  useEffect,
+} from "react";
 import TextField from "@mui/material/TextField";
 import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
@@ -10,7 +16,7 @@ import { useNavigate, Navigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { selectIsAuth } from "../../redux/slices/auth";
 import instance from "../../axios";
-import axios from 'axios';
+import axios from "axios";
 
 export const AddPost = () => {
   const { id } = useParams();
@@ -29,10 +35,10 @@ export const AddPost = () => {
     const file = event.target.files[0];
     try {
       const formData = new FormData();
-      formData.append('myImage', file );
+      formData.append("myImage", file);
 
-    const { data } = await instance.post('/upload', formData);
-    console.log(`it's data ${data}`);
+      const { data } = await instance.post("/upload", formData);
+      console.log(`it's data ${data}`);
 
       // const data = response.data;
       // setImageUrl(data.url);
@@ -63,9 +69,9 @@ export const AddPost = () => {
         text,
       };
 
-      const { data } = isEditing 
-      ? await instance.patch(`/posts/${id}`, fields)
-      : await instance.post('/posts', fields);
+      const { data } = isEditing
+        ? await instance.patch(`/posts/${id}`, fields)
+        : await instance.post("/posts", fields);
 
       const _id = isEditing ? id : data._id;
 
@@ -76,18 +82,16 @@ export const AddPost = () => {
     }
   };
 
-
   useEffect(() => {
     if (id) {
-      instance.get(`/posts/${id}`)
-      .then(({data}) => {
+      instance.get(`/posts/${id}`).then(({ data }) => {
         setTitle(data.title);
         setText(data.text);
         setImageUrl(data.imageUrl);
-        setTags(data.tags.join(','));
-      })
+        setTags(data.tags.join(","));
+      });
     }
-  }, [])
+  }, []);
 
   const options = useMemo(
     () => ({
@@ -110,21 +114,23 @@ export const AddPost = () => {
 
   return (
     <Paper style={{ padding: 30 }}>
-      <Button
-        onClick={(event) => inputFiledRef.current.click()}
-        variant="outlined"
-        size="large"
-      >
-        Завантажити прев'ю
-      </Button>
-      <input
-        name="image"
-        ref={inputFiledRef}
-        type="file"
-        onChange={handleChangeFile}
-        hidden
-      />
-       <div>{imageUrl && `${imageUrl.name} - ${imageUrl.type}`}</div>
+      <form action="/upload" enctype="multipart/form-data" method="POST">
+        <Button
+          onClick={(event) => inputFiledRef.current.click()}
+          variant="outlined"
+          size="large"
+        >
+          Завантажити прев'ю
+        </Button>
+        <input
+          name="image"
+          ref={inputFiledRef}
+          type="file"
+          onChange={handleChangeFile}
+          hidden
+        />
+      </form>
+      <div>{imageUrl && `${imageUrl.name} - ${imageUrl.type}`}</div>
       {imageUrl && (
         <>
           <Button
@@ -167,7 +173,7 @@ export const AddPost = () => {
       />
       <div className={styles.buttons}>
         <Button onClick={onSubmit} size="large" variant="contained">
-          {isEditing ? 'Зберегти': 'Опублікувати'}
+          {isEditing ? "Зберегти" : "Опублікувати"}
         </Button>
         <a href="/">
           <Button size="large">Відмінити</Button>
