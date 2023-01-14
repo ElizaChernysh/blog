@@ -40,8 +40,11 @@ export const AddPost = () => {
       formData.append("myImage", file);
       
       // const { data } = await instance.post(`/upload`, formData);
-      const { data } = await axios.post(`${instance}/upload`, formData);
-      console.log(`it's new data ${data}`);
+      instance.post("upload", formData, {
+        }).then(res => {
+            console.log(res)
+        })
+      // console.log(`it's new data ${data}`);
 
       // const data = response.data;
       // setImageUrl(data.url);
