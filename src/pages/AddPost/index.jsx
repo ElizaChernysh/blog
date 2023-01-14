@@ -39,8 +39,8 @@ export const AddPost = () => {
       const formData = new FormData();
       formData.append("myImage", file);
       
-      const { data } = await instance.post(`/upload`, formData);
-      // const { data } = await axios.post(`${instance}/upload`, formData);
+      // const { data } = await instance.post(`/upload`, formData);
+      const { data } = await axios.post(`${instance}/upload`, formData);
       console.log(`it's new data ${data}`);
 
       // const data = response.data;
