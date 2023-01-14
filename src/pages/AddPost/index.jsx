@@ -40,7 +40,7 @@ export const AddPost = () => {
       formData.append("myImage", file);
       
       // const { data } = await instance.post(`/upload`, formData);
-      instance.post("upload", formData, {
+      instance.post("/upload", formData, {
         }).then(res => {
             console.log(res)
         })
