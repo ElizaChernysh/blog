@@ -59,44 +59,44 @@ export const AddPost = () => {
     setText(value);
   }, []);
 
-  // const onSubmit = async () => {
-  //   try {
-  //     setLoading(true);
-
-  //     const fields = {
-  //       title,
-  //       imageUrl,
-  //       tags,
-  //       text,
-  //     };
-
-  //     const { data } = isEditing
-  //       ? await instance.patch(`/posts/${id}`, fields)
-  //       : await instance.post("/posts", fields);
-
-  //     const _id = isEditing ? id : data._id;
-
-  //     navigate(`/posts/${_id}`);
-  //   } catch (err) {
-  //     console.warn(err);
-  //     alert("Помилка при завантаженні cтатті");
-  //   }
-  // };
-
   const onSubmit = async () => {
     try {
-      const data = new FormData();
-      data.append("title", title);
-      data.append("text", text);
-      data.append("image", imageUrl);
-      data.append("tags", tags)
+      setLoading(true);
 
-      dispatch(createPost(data));
-      navigate("/");
-    } catch (error) {
-      console.log(error);
+      const fields = {
+        title,
+        imageUrl,
+        tags,
+        text,
+      };
+
+      const { data } = isEditing
+        ? await instance.patch(`/posts/${id}`, fields)
+        : await instance.post("/posts", fields);
+
+      const _id = isEditing ? id : data._id;
+
+      navigate(`/posts/${_id}`);
+    } catch (err) {
+      console.warn(err);
+      alert("Помилка при завантаженні cтатті");
     }
-  }
+  };
+
+  // const onSubmit = async () => {
+  //   try {
+  //     const data = new FormData();
+  //     data.append("title", title);
+  //     data.append("text", text);
+  //     data.append("image", imageUrl);
+  //     data.append("tags", tags)
+
+  //     dispatch(createPost(data));
+  //     navigate("/");
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }
 
   useEffect(() => {
     if (id) {
@@ -107,7 +107,7 @@ export const AddPost = () => {
         setTags(data.tags.join(","));
       });
     }
-  }, []);
+  }, [id]);
 
   const options = useMemo(
     () => ({
