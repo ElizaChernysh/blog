@@ -13,10 +13,10 @@ import SimpleMDE from "react-simplemde-editor";
 import "easymde/dist/easymde.min.css";
 import styles from "./AddPost.module.scss";
 import { useNavigate, Navigate, useParams } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { selectIsAuth } from "../../redux/slices/auth";
 import instance from "../../axios";
-import axios from "axios";
+import { createPost} from "../../redux/slices/posts";
 
 export const AddPost = () => {
   const { id } = useParams();
@@ -29,31 +29,25 @@ export const AddPost = () => {
   const [imageUrl, setImageUrl] = useState(null);
   const inputFiledRef = useRef(null);
 
+  const dispatch = useDispatch();
+
   const isEditing = Boolean(id);
 
-  const handleChangeFile = async (event) => {
-    try {
-      const file = event.target.files[0];
-      console.log(file);
-      console.log(file.name);
-      console.log("try again");
-      const formData = new FormData();
-      formData.append("myImage", file.name);
-      
-      // const { data } = await instance.post(`/upload`, formData);
-      instance.post("/upload", formData, {
-        }).then(res => {
-            console.log(res)
-        })
-      // console.log(`it's new data ${data}`);
+  // const handleChangeFile = async (event) => {
+  //   try {
+  //     const file = event.target.files[0];
+  //     console.log(file);
+  //     console.log(file.name);
+  //     console.log("try again");
+  //     const formData = new FormData();
+  //     formData.append("myImage", file.name);
 
-      // const data = response.data;
-      // setImageUrl(data.url);
-    } catch (err) {
-      console.warn(err);
-      alert("Помилка при завантаженні файла");
-    }
-  };
+  //     // const { data } = await instance.post(`/upload`, formData);
+  //   } catch (err) {
+  //     console.warn(err);
+  //     alert("Помилка при завантаженні файла");
+  //   }
+  // };
 
   console.log(imageUrl);
 
@@ -65,29 +59,44 @@ export const AddPost = () => {
     setText(value);
   }, []);
 
+  // const onSubmit = async () => {
+  //   try {
+  //     setLoading(true);
+
+  //     const fields = {
+  //       title,
+  //       imageUrl,
+  //       tags,
+  //       text,
+  //     };
+
+  //     const { data } = isEditing
+  //       ? await instance.patch(`/posts/${id}`, fields)
+  //       : await instance.post("/posts", fields);
+
+  //     const _id = isEditing ? id : data._id;
+
+  //     navigate(`/posts/${_id}`);
+  //   } catch (err) {
+  //     console.warn(err);
+  //     alert("Помилка при завантаженні cтатті");
+  //   }
+  // };
+
   const onSubmit = async () => {
     try {
-      setLoading(true);
+      const data = new FormData();
+      data.append("title", title);
+      data.append("text", text);
+      data.append("image", imageUrl);
+      data.append("tags", tags)
 
-      const fields = {
-        title,
-        imageUrl,
-        tags,
-        text,
-      };
-
-      const { data } = isEditing
-        ? await instance.patch(`/posts/${id}`, fields)
-        : await instance.post("/posts", fields);
-
-      const _id = isEditing ? id : data._id;
-
-      navigate(`/posts/${_id}`);
-    } catch (err) {
-      console.warn(err);
-      alert("Помилка при завантаженні cтатті");
+      dispatch(createPost(data));
+      navigate("/");
+    } catch (error) {
+      console.log(error);
     }
-  };
+  }
 
   useEffect(() => {
     if (id) {
@@ -133,11 +142,17 @@ export const AddPost = () => {
           name="image"
           ref={inputFiledRef}
           type="file"
-          onChange={handleChangeFile}
+          onChange={(e) => e.target.files[0]}
+          // onChange={handleChangeFile}
           hidden
         />
       </form>
-      <div>{imageUrl && `${imageUrl.name} - ${imageUrl.type}`}</div>
+      <div>
+        {imageUrl && (
+          <img src={URL.createObjectURL(imageUrl)} alt={imageUrl.name} />
+        )}
+      </div>
+      {/* <div>{imageUrl && `${imageUrl.name} - ${imageUrl.type}`}</div> */}
       {imageUrl && (
         <>
           <Button

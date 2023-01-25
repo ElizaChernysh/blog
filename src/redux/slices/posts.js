@@ -1,6 +1,14 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import instance from '../../axios';
 
+export const createPost = createAsyncThunk('post/createPost', async (params) => {
+  try {
+    const { data } = await instance.post('/posts', params);
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+});
 
 export const fetchPosts = createAsyncThunk('posts/fetchPosts', async () => {
   const { data } = await instance.get('/posts');
@@ -32,6 +40,18 @@ const postSlice = createSlice({
   initialState,
   reducer: {},
   extraReducers: {
+    // Create post
+    [createPost.pending]: (state) => {
+      state.loading = true
+    },
+    [createPost.fulfilled]: (state, action) => {
+      state.loading = false
+      state.posts.push(action.payload)
+    },
+    [createPost.rejected]: (state) => {
+      state.loading = false
+    },
+
     // get posts
     [fetchPosts.pending]: (state) => {
       state.posts.items = [];
